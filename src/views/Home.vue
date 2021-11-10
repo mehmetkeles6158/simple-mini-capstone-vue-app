@@ -18,9 +18,19 @@
       <input type="text" v-model="newProduct.image_url" />
     </p>
 
-    <button v-on:click="createProducts">Make Product</button>
+    <button v-on:click="createProduct">Make Product</button>
+    <hr />
     <div v-for="product in products" :key="product.id">
-      <p>{{ product.name }}</p>
+      <p>
+        <b>Name:</b>
+        {{ product.name }}
+      </p>
+      <p>
+        <b>Price:</b>
+        {{ product.price }}
+      </p>
+      <img v-bind:src="product.image_url" v-bind:alt="product.name" />
+      <hr />
     </div>
   </div>
 </template>
@@ -48,14 +58,15 @@ export default {
         this.products = response.data;
       });
     },
-    createProducts: function () {
+    createProduct: function () {
       console.log("create product");
+      console.log(this.newProduct);
       axios
         .post("http://localhost:3000/products", {
-          input_name: this.newRecipe.name,
-          input_price: this.newRecipe.price,
-          input_description: this.newRecipe.input_description,
-          image_url: this.newRecipe.image_url,
+          name: this.newProduct.name,
+          price: this.newProduct.price,
+          description: this.newProduct.description,
+          url: this.newProduct.image_url,
         })
         .then((response) => {
           console.log(response.data);
