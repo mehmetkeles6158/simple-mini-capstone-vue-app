@@ -22,6 +22,10 @@
     <hr />
     <div v-for="product in products" :key="product.id">
       <p>
+        <b>Id:</b>
+        {{ product.id }}
+      </p>
+      <p>
         <b>Name:</b>
         {{ product.name }}
       </p>
@@ -37,20 +41,21 @@
       <form method="dialog">
         <p>
           <b>Name:</b>
-          {{ currentProduct.name }}
+          <input type="text" v-model="currentProduct.name" />
         </p>
         <p>
           <b>Price:</b>
-          {{ currentProduct.price }}
+          <input type="text" v-model="currentProduct.price" />
         </p>
         <p>
           <b>Description:</b>
-          {{ currentProduct.description }}
+          <input type="text" v-model="currentProduct.description" />
         </p>
         <p>
           <b>Image Url:</b>
-          {{ currentProduct.image_url }}
+          <input type="text" v-model="currentProduct.image_url" />
         </p>
+        <button v-on:click="updateProduct(currentProduct)">Edit Product</button>
         <button>Close</button>
       </form>
     </dialog>
@@ -101,6 +106,18 @@ export default {
       this.currentProduct = theProduct;
       console.log("opening modal...");
       document.querySelector("#show-product").showModal();
+    },
+    updateProduct: function (theProduct) {
+      console.log("updating product!");
+      var productParams = {
+        name: theProduct.name,
+        price: theProduct.price,
+        description: theProduct.description,
+        url: theProduct.url,
+      };
+      axios.patch(`http://localhost:3000/products/${theProduct.id}`, productParams).then((response) => {
+        console.log(response.data);
+      });
     },
   },
 };
