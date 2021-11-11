@@ -30,8 +30,31 @@
         {{ product.price }}
       </p>
       <img v-bind:src="product.image_url" v-bind:alt="product.name" />
+      <p><button v-on:click="showProduct(product)">More Info</button></p>
       <hr />
     </div>
+    <dialog id="show-product">
+      <form method="dialog">
+        <p>
+          <b>Name:</b>
+          {{ currentProduct.name }}
+        </p>
+        <p>
+          <b>Price:</b>
+          {{ currentProduct.price }}
+        </p>
+        <p>
+          <b>Description:</b>
+          {{ currentProduct.description }}
+        </p>
+        <p>
+          <b>Image Url:</b>
+          {{ currentProduct.image_url }}
+        </p>
+        <button>Close</button>
+      </form>
+    </dialog>
+    <hr />
   </div>
 </template>
 
@@ -45,6 +68,7 @@ export default {
       message: "Hello Vue.js! This is my first framework' project",
       products: [],
       newProduct: {},
+      currentProduct: {},
     };
   },
   created: function () {
@@ -71,6 +95,12 @@ export default {
         .then((response) => {
           console.log(response.data);
         });
+    },
+    showProduct: function (theProduct) {
+      console.log(theProduct);
+      this.currentProduct = theProduct;
+      console.log("opening modal...");
+      document.querySelector("#show-product").showModal();
     },
   },
 };
