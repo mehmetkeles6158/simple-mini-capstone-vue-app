@@ -35,6 +35,7 @@
       </p>
       <img v-bind:src="product.image_url" v-bind:alt="product.name" />
       <p><button v-on:click="showProduct(product)">More Info</button></p>
+      <p><button v-on:click="deleteProduct(product)">Delete product</button></p>
       <hr />
     </div>
     <dialog id="show-product">
@@ -113,10 +114,19 @@ export default {
         name: theProduct.name,
         price: theProduct.price,
         description: theProduct.description,
-        url: theProduct.url,
+        url: theProduct.image_url,
       };
       axios.patch(`http://localhost:3000/products/${theProduct.id}`, productParams).then((response) => {
         console.log(response.data);
+      });
+    },
+    deleteProduct: function (theProduct) {
+      console.log(theProduct.id);
+      console.log("deleting product !");
+      axios.delete(`http://localhost:3000/products/${theProduct.id}`).then((response) => {
+        console.log(response.data);
+        var index = this.products.indexOf(theProduct);
+        this.products.splice(index, 1);
       });
     },
   },
