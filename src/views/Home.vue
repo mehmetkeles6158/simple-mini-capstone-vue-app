@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1>{{ message }}</h1>
+    <h1>{{ errors }}</h1>
     <p>
       name:
       <input type="text" v-model="newProduct.name" />
@@ -75,6 +75,7 @@ export default {
       products: [],
       newProduct: {},
       currentProduct: {},
+      errors: [],
     };
   },
   created: function () {
@@ -100,6 +101,11 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
+          this.newProduct = {};
+        })
+        .catch((error) => {
+          console.log(error.response.data.errors);
+          this.errors = error.response.data.errors;
         });
     },
     showProduct: function (theProduct) {
